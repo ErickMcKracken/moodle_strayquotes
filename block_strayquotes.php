@@ -10,7 +10,7 @@ class block_strayquotes extends block_base {
 
     function init() {
         $this->title = 'strayquotes';
-        $this->version = 2018051501;
+        $this->version = 2018051503;
     }
 
     function applicable_formats() {
@@ -36,7 +36,7 @@ class block_strayquotes extends block_base {
 
         if ($this->config == null) {
             //le bloc vient d'être créé
-            $this->config = new \stdClass();
+            $this->config = new stdClass();
             $this->config->author = '';
             $this->config->quote_id = 0;
 
@@ -51,13 +51,44 @@ class block_strayquotes extends block_base {
         //else {
             // On a ajouté ces paramètres
             //var_dump($this->config);
-        //}
+        //}   
+        
+/*******************************************************/
+/*               Pick a random key in array   #1       */
+/*******************************************************/        
+        
+        function array_random($arr, $num = 1) {
+            shuffle($arr);
 
-
+            $r = array();
+            for ($i = 0; $i < $num; $i++) {
+                $r[] = $arr[$i];
+            }
+            return $num == 1 ? $r[0] : $r;
+        }
+              
+/*******************************************************/
+/*   Retrieve array of quotes and pick one randomly    */
+/*******************************************************/       
+        
         $this->content = new stdClass;
-        $quote = $DB->get_record('block_strayquotes', ['id' => $this->config->quote_id]);
+       // $quote = $DB->get_record('block_strayquotes', ['id' => $this->config->quote_id]);
+        $sql = "SELECT `ID`,`quote`,`author`,`source` FROM mdl_block_strayquotes WHERE `public`='yes' ORDER BY id desc " ;
+	        $quotes = $DB->get_records_sql($sql);
+		//$totalquotes = count($quote)-1;
+               // array_rand($quote, 1)
+               // $quote = $quotes[mt_rand(0, count($quotes) -1)];
+                $quote = array_random($quotes, $num = 1);
+                
+/*******************************************************/
+/*          Display the quote in the block             */
+/*******************************************************/
+                
         if ($quote) {
-            $this->content->text = $quote->quotes;
+            //$this->content->text = $quote->quote ;
+            //$this->content->text = $quote->quote . "-" . $quote->author;
+            $formatage = $quote->quote . "<br>-&nbsp;" . $quote->author;
+            $this->content->text = $formatage;
         }
         else {
             $this->content->text = 'Bloc à configurer.';
@@ -66,5 +97,5 @@ class block_strayquotes extends block_base {
         $this->content->footer = '';
         return $this->content;
     }
-
+    
 }
