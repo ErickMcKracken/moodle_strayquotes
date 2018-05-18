@@ -7,7 +7,7 @@
  */
 
 
-$plugin->version = 2018051503;
+$plugin->version = 2018051505;
 $plugin->requires = 2015111600;
 $plugin->dependencies = [];
 $plugin->component='block_strayquotes';
