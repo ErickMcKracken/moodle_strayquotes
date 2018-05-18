@@ -19,7 +19,9 @@ class block_strayquotes_renderer extends plugin_renderer_base{
         $content .= html_writer::empty_tag('img', array('src' => $author_picture, 'alt' => $author_name, 'class' => 'block_strayquotes_authorpix'));
         $content .= html_writer::start_span('block_strayquotes_quoteText') . $quote . html_writer::end_span();
        // $content .= html_writer::html($quote);
-        $content .= html_writer::label($quote, array('class' => 'block_strayquotes_quoteText'))  ;
+     // $content .= html_writer::label($quote, array('class' => 'block_strayquotes_quoteText'))  ;
+        //$content .= html_writer:: start_tag('p',array('class'=>'block_strayquotes_quoteText'));
+        //$content .= $quote;
         $content .= html_writer:: tag('br');
         $content .= html_writer::start_span('quoteauthor') . $author_name . html_writer::end_span();
         $content .= html_writer:: tag('br');

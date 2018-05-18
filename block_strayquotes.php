@@ -1,11 +1,11 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: nmoller
  * Date: 14/05/18
  * Time: 4:30 PM
  */
-
 class block_strayquotes extends block_base {
 
     function init() {
@@ -30,7 +30,7 @@ class block_strayquotes extends block_base {
         return true;
     }
 
-
+    
     function get_content() {
         global $DB;
 
@@ -39,82 +39,74 @@ class block_strayquotes extends block_base {
             $this->config = new stdClass();
             $this->config->author = '';
             $this->config->quote_id = 0;
-
             $this->content = new stdClass;
-
-            $this->content->text ='Configurer le block';
+            $this->content->text = 'Configurer le block';
             $this->content->footer = '';
             parent::instance_config_commit();
 
             return $this->content;
         }
-        
-  /*      $renderer = $this->page->get_renderer('block_strayquotes');
-        $row[] = $renderer->get_quote();
-  */    
-/*******************************************************/
-/*               Pick a random key in array   #1       */
-/*******************************************************/        
-        
-        function array_random($arr, $num = 1) {
-            shuffle($arr);
 
-            $r = array();
-            for ($i = 0; $i < $num; $i++) {
-                $r[] = $arr[$i];
-            }
-            return $num == 1 ? $r[0] : $r;
-        }
-              
-        
- function get_author($DB, $param){
-            //$author = $DB->get_record('block_strayquotes_authors', ['id' => $param]); 
-            $author = $DB->get_record('block_strayquotes_authors', array('id' => $param), '*', MUST_EXIST); 
-          // $author = $DB->get_record_sql('select * from {block_strayquotes_authors} where id = ?', $param[1] );
-           // $author = $DB->get_record_sql('select * from {block_strayquotes_authors} where id=" . &param . " ');
-           //$author = $DB->get_record_sql('select * from {block_strayquotes_authors} where id=1'); 
-           return $author;
-  }        
-/*******************************************************/
-/*   Retrieve array of quotes and pick one randomly    */
-/*******************************************************/       
-        
+        /** **************************************************** */
+        /*   Retrieve array of quotes and pick one randomly    */
+        /** **************************************************** */
+
         $this->content = new stdClass;
-       // $quote = $DB->get_record('block_strayquotes', ['id' => $this->config->quote_id]);
-        $sql = "SELECT `ID`,`quote`,`author_id`,`source` FROM mdl_block_strayquotes WHERE `visible`='yes' ORDER BY id desc " ;
-	        $quotes = $DB->get_records_sql($sql);
-                $quote = array_random($quotes, $num = 1);
-                $authorid = $quote->author_id;
-                $author = get_author($DB, $authorid);
-              //  echo "auteur:" . $author;
- 
-/*******************************************************/
-/*          Display the quote in the block             */
-/*******************************************************/
-                
-                
-                
-                
+        // $quote = $DB->get_record('block_strayquotes', ['id' => $this->config->quote_id]);
+        $sql = "SELECT `ID`,`quote`,`author_id`,`source` FROM mdl_block_strayquotes WHERE `visible`='yes' ORDER BY id desc ";
+        $quotes = $DB->get_records_sql($sql);
+        $quote = $this->array_random($quotes, $num = 1);
+        $authorid = $quote->author_id;
+        $author = $this->get_author($DB, $authorid);
+        $author_picture = $author->author_picture;
+        $stray_quote = $quote->quote;
+        $author_name = $author->author_name;
+        $source = $quote->source;
         if ($quote) {
             //$this->content->text = $quote->quote ;
             //$this->content->text = $quote->quote . "-" . $quote->author;
             //$formatage = $quote->quote . "<div> <img src=" . $author->author_picture . " /><br>-&nbsp;" . $author->author_name;
             //$formatage = "<div class=quote><div class=quoteDetails><img src=" . $author->author_picture . " /><div style=float:left; class=quoteText>&ldquo; " . $quote->quote . " &rdquo;<br>  &#8213;"  . $author->author_name . "</div></div></div>" ;
-            
-            $formatage = "<p><img class=quotepix src=" . $author->author_picture . " />   &ldquo; " . $quote->quote . " &rdquo;<br>  &#8213;"  . $author->author_name . "</p>" ;
-            
+            //$formatage = "<p><img class=quotepix src=" . $author->author_picture . " />   &ldquo; " . $quote->quote . " &rdquo;<br>  &#8213;"  . $author->author_name . "</p>" ;
             //$formatage = "<div id=container><div id=floated><img src=" . $author->author_picture . " /></div>   &ldquo; " . $quote->quote . " &rdquo;<br>  &#8213;"  . $author->author_name . "</div>" ;
-            
-             //$formatage = "<p class=cossin><img class=cossin2 src=" . $author->author_picture . " /></div>   &ldquo; " . $quote->quote . " &rdquo;<br>  &#8213;"  . $author->author_name . "</p>" ;
-            
-            
-            $this->content->text = $formatage;
-        }
-        else {
+            //$formatage = "<p class=cossin><img class=cossin2 src=" . $author->author_picture . " /></div>   &ldquo; " . $quote->quote . " &rdquo;<br>  &#8213;"  . $author->author_name . "</p>" ;
+            //$this->content->text = $formatage;
+            $renderer = $this->page->get_renderer('block_strayquotes');
+            $this->content->text = $renderer->display_quote($stray_quote, $author_name, $author_picture, $source);
+            //$this->content->text = "testt";
+        } else {
             $this->content->text = 'Bloc à configurer.';
         }
 
-        $this->content->footer = '';
+        //$this->content->footer = '';
         return $this->content;
-    }   
+       
+    }
+
+    /*     * **************************************************** */
+    /*       Pick a random key in an array of quotes       */
+    /*     * **************************************************** */
+
+    function array_random($arr, $num = 1) {
+        shuffle($arr);
+
+        $r = array();
+        for ($i = 0; $i < $num; $i++) {
+            $r[] = $arr[$i];
+        }
+        return $num == 1 ? $r[0] : $r;
+    }
+
+    /*     * ***************************************************************** */
+    /*   Retrieve the author of the associated quote and his picture    */
+    /*     * ***************************************************************** */
+
+    function get_author($DB, $param) {
+        //$author = $DB->get_record('block_strayquotes_authors', ['id' => $param]); 
+        $author = $DB->get_record('block_strayquotes_authors', array('id' => $param), '*', MUST_EXIST);
+        // $author = $DB->get_record_sql('select * from {block_strayquotes_authors} where id = ?', $param[1] );
+        // $author = $DB->get_record_sql('select * from {block_strayquotes_authors} where id=" . &param . " ');
+        //$author = $DB->get_record_sql('select * from {block_strayquotes_authors} where id=1'); 
+        return $author;
+    }
 }

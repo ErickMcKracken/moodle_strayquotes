@@ -19,12 +19,13 @@ and open the template in the editor.
 */
 
 .block_strayquotes_quote{float:left;
-                         width:500px;
 }
 	
 .block_strayquotes_quoteDetails{float:left;
-	                        width:83%;
-	                        margin-right:2%;
+	                        width:95%;	               
+                                font-family:"Lato", "Helvetica Neue", "Helvetica", sans-serif;
+	                        font-weight:bold;
+                                line-height:1em;
 }
 	
 .block_strayquotes_quoteText {font-family:"Lato", "Helvetica Neue", "Helvetica", sans-serif;
@@ -33,7 +34,9 @@ and open the template in the editor.
 }
 	
 .block_strayquotes_authorpix{float:left;
-                             margin-right: 5px;
+                             margin-right: 25px;
+                             padding-right: 15px;
+                             margin: 0 0 20px 0;
 }
 	
 #container{width:200px;
