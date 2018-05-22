@@ -5,7 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+defined('MOODLE_INTERNAL') || die;
 class block_strayquotes_add_quote extends   block_edit_form {
     protected function specific_definition($mform) {
         global $PAGE, $DB;
@@ -14,9 +14,9 @@ class block_strayquotes_add_quote extends   block_edit_form {
         $mform->addElement('header', 'configheader', 'strayquotes config');
         
        // Add the quote
-        $mform->addElement('textarea', 'quote', get_string("introtext", "survey"), 'wrap="virtual" rows="20" cols="40"');
-        $mform->setDefault('config_source', get_string('source', 'block_strayquotes'));
-        $mform->setType('config_source', PARAM_NOTAGS);
+        $mform->addElement('textarea', 'quote', get_string("quote", "survey"), 'wrap="virtual" rows="20" cols="40"');
+        $mform->setDefault('config_quote', get_string('quote', 'block_strayquotes'));
+        $mform->setType('config_quote', PARAM_TEXT);
         
         // Select the author
         $query = "Select distinct author from {block_strayquotes}";

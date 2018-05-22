@@ -1,5 +1,5 @@
 <?php
-
+defined('MOODLE_INTERNAL') || die;
 class block_strayquotes_edit_form extends block_edit_form {
     protected function specific_definition($mform) {
         global $PAGE, $DB;
@@ -18,16 +18,16 @@ class block_strayquotes_edit_form extends block_edit_form {
         if (empty($this->block->config->ajax_enabled) || $this->block->config->ajax_enabled=='yes') {
             $mform->getElement('config_ajax_enabled')->setSelected('yes');
         } else {
-            $mform->getElement('config_eajax_enabled')->setSelected('no');
+            $mform->getElement('config_ajax_enabled')->setSelected('no');
         }
         
         $mform->addElement('text', 'config_loading_message', get_string('loadingmessage', 'block_strayquotes'));
-        $mform->setDefault('config_loading_message', get_string('loadingmessage', 'block_strayquotes'));
+        $mform->setDefault('config_loading_message', get_string('Loading...', 'block_strayquotes'));
         $mform->setType('config_loading_message', PARAM_TEXT);
         
         $mform->addElement('text', 'config_timer', get_string('timer', 'block_strayquotes'));
         $mform->setDefault('config_timer', get_string('timer', 'block_strayquotes'));
-        $mform->setType('config_timer', PARAM_TEXT);
+        $mform->setType('config_timer', PARAM_INTEGER);
         
         
         

@@ -5,4 +5,90 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+defined('MOODLE_INTERNAL') || die;
+<div class="tablenav">
+<div class="alignleft actions" style="margin-right:10px">      
+<select name="bulk" id="bulkselect" style="vertical-align:middle;max-width:110px" onchange="javascript:disable_enable()" />
+<option value="noaction" >Bulk Actions</option>
+<option value="multidelete">delete</option>
+<option value="togglevisible">toggle visibility</option>
+<option value="changecategory">change category</option>
+</select>
+<select name="catselect" id="catselect" style="vertical-align:middle;max-width:120px"> 
+<option value="default" >
+        default</option>
+<option value="Socialism" >
+        Socialism</option>
+<option value="Communism" >
+        Communism</option>
+<option value="Non-Violence" >
+        Non-Violence</option>
+</select>
+<input type="submit" value="Apply" class="button-secondary action" />
+</div>
+        
+<div class="alignleft actions"> 
+<span style="color:#666; font-size:11px;white-space:nowrap;">display  </span>
+<select name="lines" onchange="switchpage(this)"  style="vertical-align:middle">
+<option value=listquotes.php?page=stray_manage&qo=quoteID&qc=all&qs=DESC&qp=1&qr=10 selected >10 quotes</option>
+<option value=listquotes.php??page=stray_manage&qo=quoteID&qc=all&qs=DESC&qp=1&qr=15 >15 quotes</option>
+<option value=listquotes.php??page=stray_manage&qo=quoteID&qc=all&qs=DESC&qp=1&qr=20 >20 quotes</option>
+<option value=listquotes.php??page=stray_manage&qo=quoteID&qc=all&qs=DESC&qp=1&qr=30 >30 quotes</option>
+<option value=listquotes.php??page=stray_manage&qo=quoteID&qc=all&qs=DESC&qp=1&qr=50 >50 quotes</option>
+<option value=listquotes.php??page=stray_manage&qo=quoteID&qc=all&qs=DESC&qp=1&qr=100 >100 quotes</option>
+</select> <!--<span style="color:#666; font-size:11px;white-space:nowrap;"> from  </span>-->
+<select name="categories" onchange="switchpage(this)"  style="vertical-align:middle;max-width:120px"> 
+<option value="listquotes.php??page=stray_manage&qo=quoteID&qp=1&qr=10&qs=DESC&qc=all" 
+ selected>all categories</option>
+<option value="listquotes.php??page=stray_manage&qo=quoteID&qp=1&qr=10&qs=DESC&qc=default"  >default</option>
+<option value="listquotes.php??page=stray_manage&qo=quoteID&qp=1&qr=10&qs=DESC&qc=Socialism"  >Socialism</option>
+<option value="listquotes.php??page=stray_manage&qo=quoteID&qp=1&qr=10&qs=DESC&qc=Communism"  >Communism</option>
+</select></div>
 
+<div class="tablenav-pages">
+<span class="displaying-num">Page 1 of 87</span><strong>&nbsp;&nbsp;1 <a href="listquotes.php?page=stray_manage&qo=quoteID&qr=10&qc=all&qs=DESC&qp=2">2</a>  . <a href="listquotes.php?page=stray_manage&qo=quoteID&qr=10&qc=all&qs=DESC&qp=87"> 87</a>  <a href="listquotes.php?page=stray_manage&qo=quoteID&qr=10&qc=all&qs=DESC&qp=2" title=" Next 10">&raquo;</a> </strong>
+</div>
+</div>
+
+
+<table class="widefat" id="straymanage">         
+<thead><tr>
+<th scope="col" style="padding-left: 0; margin-left:0">
+<input type="checkbox" style="padding-left:0" /></th>   				
+<th scope="col" style="white-space: nowrap;"> ID<a href="listquotes.php??page=stray_manage&qo=quoteID&qp=1&qr=10&qc=all&qs=ASC">
+					<img src= http://culturalmarxism.net/wp-content/plugins/stray-quotes/img/s_desc.png alt="Ascending" title="Ascending" /></a>
+</th>
+<th scope="col"> Quote </th>				
+<th scope="col" style="white-space: nowrap;"><a href="listquotes.php?page=stray_manage&qp=1&qr=10&qc=all&qs=DESC&qo=author">Author</a>				            
+</th>				
+<th scope="col" style="white-space: nowrap;"><a href="listquotes.php?page=stray_manage&qp=1&qr=10&qc=all&qs=DESC&qo=source">Source</a>
+</th>
+<th scope="col" style="white-space: nowrap;"><a href="listquotes.php?page=stray_manage&qp=1&qr=10&qc=all&qs=DESC&qo=category">Category</a>
+</th>			
+<th scope="col" style="white-space: nowrap;"><a href="listquotes.php?page=stray_manage&qp=1&qr=10&qc=all&qs=DESC&qo=visible">Visible</a>
+</th>           
+<th scope="col">&nbsp;</th>
+<th scope="col">&nbsp;</th>            
+</tr></thead>
+                
+<tbody>		
+<tr  class="alternate"  >      				
+<td scope="col" style="white-space: nowrap;"><input type="checkbox" name="check_select0" value="868" /> </td> 
+<th scope="row">868</th>
+<td>Yeah, well, you know, that’s just, like, your opinion, man.</td>
+<td>The Dude</td>
+<td>Big Lebowski - The Movie</td>
+<td>Nihilism</td>
+<td>yes</td>
+        
+<td align="center">
+<a href="listquotes.php?page=stray_manage&qo=quoteID&qp=1&qr=10&qc=all&qs=DESC&qa=edit&qi=868">
+Edit</a></td>
+<td align="center">
+<a href="listquotes.php?page=stray_manage&qo=quoteID&qp=1&qr=10&qc=all&qs=DESC&qa=delete&qi=868"
+					onclick="if ( confirm('You are about to delete quote 868.\n\'Cancel\' to stop, \'OK\' to delete.') ) { return true;}return false;">Delete</a></td>			
+</tr>				
+</tbody>
+         
+<span class="displaying-num">Page 1 of 87</span><strong>&nbsp;&nbsp;1 <a href="listquotes.php?page=stray_manage&qo=quoteID&qr=10&qc=all&qs=DESC&qp=2">2</a>  . <a href="listquotes.php?page=stray_manage&qo=quoteID&qr=10&qc=all&qs=DESC&qp=87"> 87</a>  <a href="listquotes.php?page=stray_manage&qo=quoteID&qr=10&qc=all&qs=DESC&qp=2" title=" Next 10">&raquo;</a> </strong>            
+</div></div></form></div>
