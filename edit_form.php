@@ -1,35 +1,37 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nmoller
- * Date: 14/05/18
- * Time: 4:32 PM
- */
 
 class block_strayquotes_edit_form extends block_edit_form {
     protected function specific_definition($mform) {
         global $PAGE, $DB;
-        $PAGE->requires->js(new moodle_url('/blocks/strayquotes/js/form.js'));
-
-        $query = "Select distinct author from {block_strayquotes}";
-        $quote_arr = $DB->get_records_sql($query);
-
-        // Field for editing Side Bar block title
-        $mform->addElement('header', 'configheader', 'strayquotes config');
-
-        $authors = ['Choose author'];
-        foreach ($quote_arr as $author) {
-            $key = str_replace(" ","_", $author->author);
-            $authors[$key] = $author->author;
+/*
+       $mform->addElement('selectyesno', 'ajax_enabled', get_string('ajax_enabled', 'block_strayquotes'));
+        if (isset($this->block->config->ajax_enabled)) {
+            $mform->setDefault('config_ajax_enabled', $this->block->config->display_skype);
+        } else {
+            $mform->setDefault('config_ajax_enabled', '0');
         }
+*/
+        
+         $yesnooptions = array('yes'=>get_string('yes'), 'no'=>get_string('no'));
 
-
-        $mform->addElement('select', 'config_author', 'config author', $authors);
-        $mform->setType('config_author', PARAM_TEXT);
-
-        $quotes_array = ['3'=>"Select author first"];
-        $mform->addElement('select', 'config_quote_id', "Select quote", $quotes_array);
-        $mform->setType('config_quote_id', PARAM_TEXT);
-    }
-
+        $mform->addElement('select', 'config_ajax_enabled', get_string('ajaxenabled', $this->block->block_strayquotes), $yesnooptions);
+        if (empty($this->block->config->ajax_enabled) || $this->block->config->ajax_enabled=='yes') {
+            $mform->getElement('config_ajax_enabled')->setSelected('yes');
+        } else {
+            $mform->getElement('config_eajax_enabled')->setSelected('no');
+        }
+        
+        $mform->addElement('text', 'config_loading_message', get_string('loadingmessage', 'block_strayquotes'));
+        $mform->setDefault('config_loading_message', get_string('loadingmessage', 'block_strayquotes'));
+        $mform->setType('config_loading_message', PARAM_TEXT);
+        
+        $mform->addElement('text', 'config_timer', get_string('timer', 'block_strayquotes'));
+        $mform->setDefault('config_timer', get_string('timer', 'block_strayquotes'));
+        $mform->setType('config_timer', PARAM_TEXT);
+        
+        
+        
+    }     
 }
+
+ 

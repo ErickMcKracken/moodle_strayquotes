@@ -18,14 +18,14 @@ and open the template in the editor.
     Author     : FRENETTE_E
 */
 
-.block_strayquotes_quote{float:left;
+.block_strayquotes_quote{overflow: hidden;
+                         margin-top: 15px;
 }
 	
-.block_strayquotes_quoteDetails{float:left;
-	                        width:95%;	               
+.block_strayquotes_quoteDetails{width:95%;	               
                                 font-family:"Lato", "Helvetica Neue", "Helvetica", sans-serif;
 	                        font-weight:bold;
-                                line-height:1em;
+                                line-height:1.2em;
 }
 	
 .block_strayquotes_quoteText {font-family:"Lato", "Helvetica Neue", "Helvetica", sans-serif;
@@ -34,24 +34,12 @@ and open the template in the editor.
 }
 	
 .block_strayquotes_authorpix{float:left;
-                             margin-right: 25px;
-                             padding-right: 15px;
-                             margin: 0 0 20px 0;
+                             padding-right: 15px;            
 }
-	
-#container{width:200px;
+.block_strayquotes_author{
+    
 }
-	
-#floated{float:left;
-	 width:50px;
+.block_strayquotes_source{
+    font-style: italic;
+    font-weight: normal;
 }
-	
-.cossin2{float:left;
-	 margin: 0 0 20px 0;
-}
-	
-.cossin{text-indent:2em;
-        line-height:1.7em;
-        font-weight: bold;		
-}
-
