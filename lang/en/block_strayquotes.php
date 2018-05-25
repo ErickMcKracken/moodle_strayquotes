@@ -21,13 +21,16 @@
  * @copyright  Jason Hardin
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+$string['ajaxenabled'] = 'Ajax enabled';
+$string['config_ajax_enabled'] = 'Ajax enabled';
+$string['ajax_enabled'] = 'Ajax enabled';
 $string['strayquotes:addinstance'] = 'Add a new strayquotes block';
 $string['strayquotes:myaddinstance'] = 'Add a new strayquotes block to the My Moodle page';
-$string['ajaxenabled'] = 'Ajax enabled';
 $string['loadingmessage'] = 'Loading message';
 $string['timer'] = 'Time interval';
 $string['config_author'] = 'Select author';
 $string['pluginname'] = 'Strayquotes';
 $string['config_timer'] = 'Time interval';
 $string['Loading...'] = 'Loading...';
-$string['ajax_enabled'] = 'Ajax enabled';
+$string['configcategory'] = 'Category';
+$string['config_category'] = 'Category';
