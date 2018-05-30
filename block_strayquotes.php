@@ -1,7 +1,5 @@
 <?php
 
-//$PAGE->requires->js(new moodle_url('http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js'));
-
 class block_strayquotes extends block_base {
 
     function init() {
@@ -13,15 +11,6 @@ class block_strayquotes extends block_base {
         return array('course-view' => true);
     }
 
-    /**
-     * Is each block of this type going to have instance-specific configuration?
-     * Normally, this setting is controlled by {@link instance_allow_multiple()}: if multiple
-     * instances are allowed, then each will surely need its own configuration. However, in some
-     * cases it may be necessary to provide instance configuration to blocks that do not want to
-     * allow multiple instances. In that case, make this function return true.
-     * I stress again that this makes a difference ONLY if {@link instance_allow_multiple()} returns false.
-     * @return boolean
-     */
     function instance_allow_config() {
         return true;
     }
@@ -45,17 +34,17 @@ class block_strayquotes extends block_base {
             $timer = 5000;
             //$PAGE->requires->js_init_call('testA', [$this->config->timer, 'valeur 2']);
             //$PAGE->requires->js_call_amd('block_strayquotes/test', 'testEric', ['Hello world 3!!']);
+            $this->content = new stdClass;   //Correction du warning  "Creating default object from empty value"
             $renderer = $this->page->get_renderer('block_strayquotes');
-            $this->content->text = $this->get_quote($DB, $renderer);
+            $this->content->text = $this->get_quote($DB,$renderer);
             $PAGE->requires->js_call_amd('block_strayquotes/dyn', 'dynamicworker', [$timer]);
             return $this->content;
         }
     }
 
-    /**     * *************************************************** */
-    /*   Retrieve array of quotes and pick one randomly     */
-
-    /**     * *************************************************** */
+    /*******************************************************/
+    /*   Retrieve array of quotes and pick one randomly    */
+    /*******************************************************/
     function get_quote($DB, $renderer) {
 
         //$this->content = new stdClass;
@@ -78,9 +67,9 @@ class block_strayquotes extends block_base {
         return $content;
     }
 
-    /*     * **************************************************** */
+    /*******************************************************/
     /*       Pick a random key in an array of quotes       */
-    /*     * **************************************************** */
+    /*******************************************************/
 
     function array_random($arr, $num = 1) {
         shuffle($arr);
@@ -92,16 +81,12 @@ class block_strayquotes extends block_base {
         return $num == 1 ? $r[0] : $r;
     }
 
-    /*     * ***************************************************************** */
+    /********************************************************************/
     /*   Retrieve the author of the associated quote and his picture    */
-    /*     * ***************************************************************** */
+    /********************************************************************/
 
     function get_author($DB, $param) {
-        //$author = $DB->get_record('block_strayquotes_authors', ['id' => $param]); 
         $author = $DB->get_record('block_strayquotes_authors', array('id' => $param), '*', MUST_EXIST);
-        // $author = $DB->get_record_sql('select * from {block_strayquotes_authors} where id = ?', $param[1] );
-        // $author = $DB->get_record_sql('select * from {block_strayquotes_authors} where id=" . &param . " ');
-        //$author = $DB->get_record_sql('select * from {block_strayquotes_authors} where id=1'); 
         return $author;
     }
 
