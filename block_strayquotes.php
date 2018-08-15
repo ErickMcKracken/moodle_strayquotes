@@ -1,10 +1,11 @@
 <?php
 
 class block_strayquotes extends block_base {
-
+    
     function init() {
         $this->title = 'strayquotes';
         $this->version = 2018051503;
+       // $PAGE->set_context(context_course::instance($courseid));
     }
 
     function applicable_formats() {
@@ -16,7 +17,7 @@ class block_strayquotes extends block_base {
     }
 
     function get_content() {
-        global $DB, $PAGE;
+        global $DB, $PAGE, $COURSE;
         $PAGE->requires->js(new moodle_url('/blocks/strayquotes/js/dyn.js'));
         //$PAGE->requires->js(new moodle_url('/blocks/strayquotes/js/test.js'));
 
@@ -37,29 +38,102 @@ class block_strayquotes extends block_base {
             $this->content = new stdClass;   //Correction du warning  "Creating default object from empty value"
             $renderer = $this->page->get_renderer('block_strayquotes');
             $this->content->text = $this->get_quote($DB,$renderer);
-            $PAGE->requires->js_call_amd('block_strayquotes/dyn', 'dynamicworker', [$timer]);
+            $PAGE->requires->js_call_amd('block_strayquotes/dyn', 'dynamicworker', [$timer, $COURSE->id]);
             return $this->content;
         }
+    }
+    
+    function get_image($authorid, $courseid){
+        global $DB;
+           //var_dump($courseid); die();
+        // We define the context
+        $ctx = context_course::instance($courseid);
+        /*echo "<pre>";
+        var_dump($ctx); 
+        echo "</pre>";
+        die();
+        */
+        $imageid = $DB->get_record('randomstrayquotes_authors', ['id' => $authorid], 'author_picture');
+        //var_dump($imageid); die();
+        $fs = get_file_storage();
+     
+        // We obtain the filePathHash for the file storage area
+        $imagePathHash = $fs->get_area_files($ctx->id, 'mod_randomstrayquotes', 'content', $imageid->author_picture, "itemid, filepath, filename", false);
+      /*  var_dump($ctx->id);
+        var_dump($imageid->author_picture);
+        die();*/
+     //   var_dump($imagePathHash); die();
+        // We obtain the id of the picture file already present for the author using the imagePathHash
+        $files = array_values($imagePathHash);
+       //var_dump($files ); Die();
+        // We store the context and the id of the file in an array of parameters that we will pass at the form instanciation
+       // $file = $files[0]; 
+       // echo $file;
+        //var_dump($files); die();
+        
+       // $file = $files[0]; 
+       // echo $file;
+       // var_dump($files); die();
+      //  $filename = $file->get_filename();
+        //$url = moodle_url::make_pluginfile_url($file->get_contextid(), 'mod_randomstrayquotes','content', $file->get_itemid(),'/' ,$filename);
+          
+        //$filename = $file->get_filename();
+       // $url = moodle_url::make_pluginfile_url($file->get_contextid(), 'mod_randomstrayquotes','content', $file->get_itemid(),'/' ,$filename);
+       // return $url;
+        
+        
+         foreach ($files as $file){
+                if ($file) {
+                 $filename = $file->get_filename();
+                  $url = "shit";
+                 if ($filename){
+                      //var_dump($filename); Die();
+                       $url = moodle_url::make_pluginfile_url($file->get_contextid(), 'mod_randomstrayquotes','content', $file->get_itemid(),'/' ,$filename);
+                          //var_dump($url); Die();
+                }else{ 
+                    $url = "crap";
+                 }
+                }
+        return $url;
+         }
+
     }
 
     /*******************************************************/
     /*   Retrieve array of quotes and pick one randomly    */
     /*******************************************************/
     function get_quote($DB, $renderer) {
-
-        //$this->content = new stdClass;
-        $sql = "SELECT `ID`,`quote`,`author_id`,`source` FROM mdl_block_strayquotes WHERE `visible`='yes' ORDER BY id desc ";
+        global $DB, $COURSE;
+        $courseid = $COURSE->id;
+   
+        // Query to get the quote
+        //$sql = "SELECT * FROM mdl_randomstrayquotes_quotes WHERE `visible`='1' AND course_id = $courseid ORDER BY id desc ";
+        $sql = "SELECT * FROM mdl_randomstrayquotes_quotes WHERE `visible`='1' ORDER BY id desc ";
         $quotes = $DB->get_records_sql($sql);
-        $quote = $this->array_random($quotes, $num = 1);
-        $authorid = $quote->author_id;
-        $author = $this->get_author($DB, $authorid);
-        $author_picture = $author->author_picture;
-        $stray_quote = $quote->quote;
-        $author_name = $author->author_name;
-        $source = $quote->source;
+        // If there is some quotes in the array we pick one at random
+        if ($quotes){
+            $quote = $this->array_random($quotes, $num = 1);
+        }else{
+               $content = 'You should feed some quotes in the randomstrayquotes module first.';
+               //$quote = null;
+        }
+            // var_dump($quotes); die();
+        // If the is some quotes in the array we pick one at random and call the renderer to display it in the block 
         if ($quote) {
-            //$renderer = $this->page->get_renderer('block_strayquotes');
-            $content = $renderer->display_quote($stray_quote, $author_name, $author_picture, $source);
+            //We get the author associated with the quote
+            $authorid = $quote->author_id;
+           // var_dump($authorid); die();
+            $authorpix =  $this->get_image($authorid, $courseid); 
+            //var_dump($authorpix); die();
+            $author = $this->get_author($DB, $authorid);
+            //$author_picture = $author->author_picture;
+            //We extract the proper infos to be pass to the renderer
+            $stray_quote = $quote->quote;
+            $author_name = $author->author_name;
+            $source = $quote->source;
+            //We call the renderer to display the quote in the block
+           // $content = $renderer->display_quote($stray_quote, $authorpix, $author_name, $source);
+              $content = $renderer->display_quote($stray_quote, $courseid, $authorid, $author_name, $authorpix, $source);
         } else {
             $content = 'Bloc à configurer.';
         }
@@ -86,8 +160,7 @@ class block_strayquotes extends block_base {
     /********************************************************************/
 
     function get_author($DB, $param) {
-        $author = $DB->get_record('block_strayquotes_authors', array('id' => $param), '*', MUST_EXIST);
+        $author = $DB->get_record('randomstrayquotes_authors', array('id' => $param), '*', MUST_EXIST);
         return $author;
     }
-
 }

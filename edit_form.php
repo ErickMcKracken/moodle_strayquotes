@@ -6,7 +6,8 @@ class block_strayquotes_edit_form extends block_edit_form {
 
          $yesnooptions = array('yes'=>get_string('yes'), 'no'=>get_string('no'));
 
-        $mform->addElement('select', 'config_ajax_enabled', get_string('ajaxenabled', $this->block->block_strayquotes), $yesnooptions);
+        //$mform->addElement('select', 'config_ajax_enabled', get_string('ajaxenabled', $this->block->block_strayquotes), $yesnooptions);
+        $mform->addElement('select', 'config_ajax_enabled', get_string('ajaxenabled', 'block_strayquotes'), $yesnooptions);
         if (empty($this->block->config->ajax_enabled) || $this->block->config->ajax_enabled=='yes') {
             $mform->getElement('config_ajax_enabled')->setSelected('yes');
         } else {
@@ -16,7 +17,7 @@ class block_strayquotes_edit_form extends block_edit_form {
         // Combobox with categories
         $selectArray = array();
         $selectArray[0] = "Toutes les cats...";
-        $query = "Select * from {block_strayquotes_categories}";
+        $query = "Select * from {randomstrayquotes_categories}";
         $category_arr = $DB->get_records_sql($query);
 
         

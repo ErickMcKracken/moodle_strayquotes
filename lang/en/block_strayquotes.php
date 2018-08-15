@@ -34,3 +34,4 @@ $string['config_timer'] = 'Time interval';
 $string['Loading...'] = 'Loading...';
 $string['configcategory'] = 'Category';
 $string['config_category'] = 'Category';
+$string['ajaxenabled'] = 'Ajax Enabled';
