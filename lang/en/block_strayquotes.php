@@ -35,3 +35,4 @@ $string['Loading...'] = 'Loading...';
 $string['configcategory'] = 'Category';
 $string['config_category'] = 'Category';
 $string['ajaxenabled'] = 'Ajax Enabled';
+$string['addQuotes'] = 'Add Quotes';
