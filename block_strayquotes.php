@@ -39,7 +39,9 @@ class block_strayquotes extends block_base {
             $this->content = new stdClass;   //Correction du warning  "Creating default object from empty value"
             $renderer = $this->page->get_renderer('block_strayquotes');
             $this->content->text = $this->get_quote($DB, $renderer);
-            $PAGE->requires->js_call_amd('block_strayquotes/dyn', 'dynamicworker', [$timer, $COURSE->id]);
+            if ($this->config->ajax_enabled == 'yes'){
+               $PAGE->requires->js_call_amd('block_strayquotes/dyn', 'dynamicworker', [$timer, $COURSE->id]);
+            }
             return $this->content;
         }
     }

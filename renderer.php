@@ -122,16 +122,4 @@ class block_strayquotes_renderer extends plugin_renderer_base{
         $content .= html_writer::end_tag('div');
         return $content;
     }
-/*
-    public function display link(){
-        $courseid = $COURSE->id;
-        $content .= html_writer::empty_tag('br', null, null);
-        $content .= html_writer::empty_tag('br', null, null);
-        $content .= html_writer::start_tag('div', array('class' => 'block_strayquotes_link'));
-        $content .= html_writer::link(new moodle_url('/mod/randomstrayquotes/list_quotes.php', array('courseid'=>$courseid, 'userid'=>$userid)), get_string('addQuotes','block_strayquotes'));
-        $content .= html_writer::end_tag('div');
-
-        return $content;
-    }
-    */
 }
