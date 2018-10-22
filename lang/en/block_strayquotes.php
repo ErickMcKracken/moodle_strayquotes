@@ -41,3 +41,4 @@ $string['studentsaddcategories'] = 'The students can add categories?';
 $string['studentsaddauthors'] = 'The students can add authors?';
 $string['yes'] = 'Yes';
 $string['no'] = 'No';
+$string['configinstance'] = 'Random Stray Quotes module you want to link content from';

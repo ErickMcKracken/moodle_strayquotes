@@ -69,7 +69,6 @@ class block_strayquotes extends block_base {
          foreach ($files as $file){
                 if ($file) {
                  $filename = $file->get_filename();
-                  $url = "shit";
                  if ($filename){
                        $url = moodle_url::make_pluginfile_url($file->get_contextid(), 'mod_randomstrayquotes','content', $file->get_itemid(),'/' ,$filename);
                 }else{
@@ -89,7 +88,7 @@ class block_strayquotes extends block_base {
 
         // Query to get the quote
         //$sql = "SELECT * FROM mdl_randomstrayquotes_quotes WHERE `visible`='1' AND course_id = $courseid ORDER BY id desc ";
-        $sql = "SELECT * FROM mdl_randomstrayquotes_quotes WHERE `visible`='1' ORDER BY id desc ";
+        $sql = "SELECT * FROM mdl_randomstrayquotes_quotes WHERE `visible`='1' and course_id = $COURSE->id ORDER BY id desc ";
         $quotes = $DB->get_records_sql($sql);
         // If there is some quotes in the array we pick one at random
         if ($quotes){
@@ -98,7 +97,6 @@ class block_strayquotes extends block_base {
                $content = 'You should feed some quotes in the randomstrayquotes module first.';
                //$quote = null;
         }
-            // var_dump($quotes); die();
         // If the is some quotes in the array we pick one at random and call the renderer to display it in the block
         if ($quote) {
             //We get the author associated with the quote
