@@ -96,6 +96,10 @@ function get_image($authorid, $courseid){
 /*******************************************************/
 
 class block_strayquotes_renderer extends plugin_renderer_base{
+
+  public function set_block_instance(block_strayquotes $block) {
+      $this->block_instance = $block;
+  }
     public function display_quote($quote, $courseid, $authorid, $author_name, $authorpix, $source){
         global $COURSE, $USER;
         $courseid = $COURSE->id;
@@ -114,10 +118,14 @@ class block_strayquotes_renderer extends plugin_renderer_base{
         }
         $content .= html_writer::empty_tag('br', null, null);
         $content .= html_writer::empty_tag('br', null, null);
-        $content .= html_writer::start_tag('div', array('class' => 'block_strayquotes_link'));
-        $content .= html_writer::link(new moodle_url('/mod/randomstrayquotes/list_quotes.php', array('courseid'=>$courseid, 'userid'=>$userid)), get_string('addQuotes','block_strayquotes'));
-        $content .= html_writer::end_tag('div');
 
+        $config = $this->block_instance->config;
+        $instance = $config->instance;
+        if ($config->studentsaddquotes == 1){
+            $content .= html_writer::start_tag('div', array('class' => 'block_strayquotes_link'));
+            $content .= html_writer::link(new moodle_url('/mod/randomstrayquotes/list_quotes.php', array('courseid'=>$courseid, 'userid'=>$userid, 'instance'=>$instance)), get_string('addQuotes','block_strayquotes'));
+            $content .= html_writer::end_tag('div');
+        }
         $content .= html_writer::end_tag('div');
         $content .= html_writer::end_tag('div');
         return $content;

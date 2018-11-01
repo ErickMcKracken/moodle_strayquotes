@@ -24,20 +24,18 @@ class block_strayquotes extends block_base {
 
         if ($this->config == null) {
             //le bloc vient d'être créé
-            $this->config = new stdClass();
-            $this->config->author = '';
-            $this->config->quote_id = 0;
             $this->content = new stdClass;
             $this->content->text = 'Configurer le block';
             $this->content->footer = '';
             parent::instance_config_commit();
             return $this->content;
         } else {
-            $timer = 5000;
+            $timer = $this->config->timer;
             //$PAGE->requires->js_init_call('testA', [$this->config->timer, 'valeur 2']);
             //$PAGE->requires->js_call_amd('block_strayquotes/test', 'testEric', ['Hello world 3!!']);
             $this->content = new stdClass;   //Correction du warning  "Creating default object from empty value"
             $renderer = $this->page->get_renderer('block_strayquotes');
+            $renderer->set_block_instance($this);
             $this->content->text = $this->get_quote($DB, $renderer);
             if ($this->config->ajax_enabled == 'yes'){
                $PAGE->requires->js_call_amd('block_strayquotes/dyn', 'dynamicworker', [$timer, $COURSE->id]);
@@ -57,14 +55,6 @@ class block_strayquotes extends block_base {
         $imagePathHash = $fs->get_area_files($ctx->id, 'mod_randomstrayquotes', 'content', $imageid->author_picture, "itemid, filepath, filename", false);
         // We obtain the id of the picture file already present for the author using the imagePathHash
         $files = array_values($imagePathHash);
-        // We store the context and the id of the file in an array of parameters that we will pass at the form instanciation
-       // $file = $files[0];
-      //  $filename = $file->get_filename();
-        //$url = moodle_url::make_pluginfile_url($file->get_contextid(), 'mod_randomstrayquotes','content', $file->get_itemid(),'/' ,$filename);
-
-        //$filename = $file->get_filename();
-       // $url = moodle_url::make_pluginfile_url($file->get_contextid(), 'mod_randomstrayquotes','content', $file->get_itemid(),'/' ,$filename);
-       // return $url;
 
          foreach ($files as $file){
                 if ($file) {
@@ -87,7 +77,6 @@ class block_strayquotes extends block_base {
         $courseid = $COURSE->id;
 
         // Query to get the quote
-        //$sql = "SELECT * FROM mdl_randomstrayquotes_quotes WHERE `visible`='1' AND course_id = $courseid ORDER BY id desc ";
         $sql = "SELECT * FROM mdl_randomstrayquotes_quotes WHERE `visible`='1' and course_id = $COURSE->id ORDER BY id desc ";
         $quotes = $DB->get_records_sql($sql);
         // If there is some quotes in the array we pick one at random
@@ -95,7 +84,6 @@ class block_strayquotes extends block_base {
             $quote = $this->array_random($quotes, $num = 1);
         }else{
                $content = 'You should feed some quotes in the randomstrayquotes module first.';
-               //$quote = null;
         }
         // If the is some quotes in the array we pick one at random and call the renderer to display it in the block
         if ($quote) {
